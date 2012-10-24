@@ -20,11 +20,6 @@ class Yuyat_ParallelHttp_FixedQueue extends Yuyat_ParallelHttp_Queue
      */
     private $maxSize;
 
-    /**
-     * @var int
-     */
-    private $currentSize;
-
     public function __construct($maxSize, array $data = array())
     {
         $this->maxSize = $maxSize;
@@ -40,20 +35,7 @@ class Yuyat_ParallelHttp_FixedQueue extends Yuyat_ParallelHttp_Queue
             throw new RuntimeException(sprintf('FixedQueue is filled with %d elements', $count));
         }
 
-        $this->currentSize = $count + 1;
-
         return parent::enqueue($value);
-    }
-
-    public function dequeue()
-    {
-        $count = $this->count();
-
-        if ($count > 0) {
-            $this->count = $count - 1;
-        }
-
-        return parent::dequeue();
     }
 
     public function isFilled()
