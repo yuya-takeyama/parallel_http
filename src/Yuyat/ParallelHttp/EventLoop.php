@@ -64,7 +64,7 @@ class Yuyat_ParallelHttp_EventLoop
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER         => true,
                 CURLINFO_HEADER_OUT    => true,
-                CURLOPT_TIMEOUT        => 100,
+                CURLOPT_TIMEOUT        => 10,
                 CURLOPT_CONNECTTIMEOUT => 10,
             ));
 
@@ -81,7 +81,6 @@ class Yuyat_ParallelHttp_EventLoop
 
         $result = curl_multi_select($this->curlMulti, $this->timeout);
 
-            var_dump($result);
         switch ($result) {
         case -1:
         case 0:
@@ -102,10 +101,10 @@ class Yuyat_ParallelHttp_EventLoop
                     $status = $info['http_code'];
                     $body   = curl_multi_getcontent($curl);
 
-                    if ($body === false) {
-                        $request->emit('error', array($request, $info, $status, array(), $body));
+                    if ($status === 0) {
+                        $request->emit('error', array($curl, $info));
                     } else {
-                        $request->emit('response', array($request, $info, $status, array(), $body));
+                        $request->emit('response', array($status, array(), $body));
                     }
 
                     curl_multi_remove_handle($this->curlMulti, $curl);
