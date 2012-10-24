@@ -13,7 +13,7 @@
  *
  * @author Yuya Takeyama
  */
-class Yuyat_ParallelHttp_Queue
+class Yuyat_ParallelHttp_Queue implements Countable
 {
     private $data;
 
@@ -35,5 +35,10 @@ class Yuyat_ParallelHttp_Queue
     public function toArray()
     {
         return $this->data;
+    }
+
+    public function count()
+    {
+        return count($this->data);
     }
 }

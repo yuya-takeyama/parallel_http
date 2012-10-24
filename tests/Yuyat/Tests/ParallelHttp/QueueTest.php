@@ -64,6 +64,20 @@ class Yuyat_Tests_ParallelHttp_QueueTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('bar', 'baz'), $queue->toArray());
     }
 
+    /**
+     * @test
+     */
+    public function count_should_be_size_of_queue()
+    {
+        $queue = $this->createQueue();
+
+        $queue->enqueue('foo');
+        $queue->enqueue('bar');
+        $queue->enqueue('baz');
+
+        $this->assertEquals(3, count($queue));
+    }
+
     private function createQueue($arr = array())
     {
         return new Yuyat_ParallelHttp_Queue($arr);
