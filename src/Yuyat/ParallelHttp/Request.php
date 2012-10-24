@@ -15,19 +15,13 @@
  */
 class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
 {
-    /**
-     * @var Yuyat_ParallelHttp_EventLoop
-     */
-    private $loop;
-
-    /**
-     * @var array
-     */
-    private $options;
-
-    public function __construct(Yuyat_ParallelHttp_EventLoop $loop, $options)
+    public function __construct($url)
     {
-        $this->loop    = $loop;
-        $this->options = $options;
+        $this->url = $url;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

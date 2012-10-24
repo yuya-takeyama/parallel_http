@@ -15,7 +15,24 @@
  */
 class Yuyat_ParallelHttp_Client
 {
-    public function request($options, $callback)
+    /**
+     * @var Yuyat_ParallelHttp_EventLoop
+     */
+    private $loop;
+
+    public function __construct(Yuyat_ParallelHttp_EventLoop $loop)
     {
+        $this->loop = $loop;
+    }
+
+    public function request($url, $callback)
+    {
+        $request = new Yuyat_ParallelHttp_Request($url);
+
+        $request->on('response', $callback);
+
+        $this->loop->addRequest($request);
+
+        return $request;
     }
 }

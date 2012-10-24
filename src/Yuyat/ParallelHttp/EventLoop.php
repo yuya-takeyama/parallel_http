@@ -17,10 +17,10 @@ class Yuyat_ParallelHttp_EventLoop
 {
     public function __construct()
     {
-        $this->poller = new Yuyat_ParallelHttp_Poller;
+        $this->poller = new Yuyat_ParallelHttp_Poller(0.1, 15);
     }
 
-    public function addRequeset(Yuyat_ParallelHttp_Requeset $request)
+    public function addRequest(Yuyat_ParallelHttp_Request $request)
     {
         $this->poller->addRequest($request);
     }
@@ -33,13 +33,7 @@ class Yuyat_ParallelHttp_EventLoop
     public function run()
     {
         while ($this->poller->isUnfinished()) {
-            if ($this->poller->poll()) {
-                $requests = $this->poller->getFinishedRequests();
-
-                foreach ($requests as $request) {
-                    $request->handleResponse();
-                }
-            }
+            $this->poller->poll();
         }
     }
 }
