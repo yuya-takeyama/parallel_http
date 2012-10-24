@@ -99,12 +99,16 @@ class Yuyat_ParallelHttp_EventLoop
                     $info = curl_getinfo($curl);
 
                     $status = $info['http_code'];
-                    $body   = curl_multi_getcontent($curl);
+                    $content = curl_multi_getcontent($curl);
 
                     if ($status === 0) {
-                        $request->emit('error', array($curl, $info));
+                        $error = new stdClass;
+                        $error->curl = $curl;
+                        $error->info = $info;
+
+                        $request->emit('error', array($error));
                     } else {
-                        $request->emit('response', array($status, array(), $body));
+                        $request->emit('response', array(new Yuyat_ParallelHttp_Response($content)));
                     }
 
                     curl_multi_remove_handle($this->curlMulti, $curl);
