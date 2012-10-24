@@ -21,9 +21,13 @@ $client = new Yuyat_ParallelHttp_Client($loop);
 
 foreach ($urls as $url) {
     $request = $client->request($url, function ($response) {
+        echo "Status Code: ";
         var_dump($response->getStatusCode());
+        echo "Headers:", PHP_EOL;
         var_dump($response->getHeaders());
+        echo "Body:", PHP_EOL;
         var_dump($response->getBody());
+        echo PHP_EOL;
         echo PHP_EOL;
     });
 
