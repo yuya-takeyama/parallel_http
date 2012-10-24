@@ -9,22 +9,14 @@
  */
 
 /**
- * Event Loop using curl_multi_* functions
+ * Event Loop which passes finished request to its handler
  *
  * @author Yuya Takeyama
  */
 class Yuyat_ParallelHttp_EventLoop
 {
-    /**
-     * curl_multi resource
-     *
-     * @var resource
-     */
-    private $curlMulti;
-
     public function __construct()
     {
-        $this->curlMulti = curl_multi_init();
         $this->poller = new Yuyat_ParallelHttp_Poller;
     }
 
@@ -45,7 +37,7 @@ class Yuyat_ParallelHttp_EventLoop
                 $requests = $this->poller->getFinishedRequests();
 
                 foreach ($requests as $request) {
-                    $query->handleAsyncResult();
+                    $request->handleResponse();
                 }
             }
         }
