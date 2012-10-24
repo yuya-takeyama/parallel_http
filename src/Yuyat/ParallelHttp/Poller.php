@@ -34,12 +34,12 @@ class Yuyat_ParallelHttp_Poller
         $this->timeout = $timeout;
         $this->parallels = $parallels;
         $this->curlMulti = curl_multi_init();
-        $this->requestQueue = new Yuyat_ParallelHttp_Queue(10);
+        $this->requestQueue = new Yuyat_ParallelHttp_Queue($parallels);
     }
 
     public function addRequest($request)
     {
-        $this->requestQueue->push($request);
+        $this->requestQueue->enqueue($request);
     }
 
     public function poll()

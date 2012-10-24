@@ -43,6 +43,33 @@ class Yuyat_Tests_ParallelHttp_FixedQueueTest extends PHPUnit_Framework_TestCase
         $queue->enqueue('overflow');
     }
 
+    /**
+     * @test
+     */
+    public function isFilled_should_be_false_if_it_is_not_filled()
+    {
+        $queue = $this->createFixedQueue(3);
+
+        $queue->enqueue('foo');
+        $queue->enqueue('bar');
+
+        $this->assertFalse($queue->isFilled());
+    }
+
+    /**
+     * @test
+     */
+    public function isFilled_should_be_true_if_it_is_filled()
+    {
+        $queue = $this->createFixedQueue(3);
+
+        $queue->enqueue('foo');
+        $queue->enqueue('bar');
+        $queue->enqueue('baz');
+
+        $this->assertTrue($queue->isFilled());
+    }
+
     private function createFixedQueue($size, array $data = array())
     {
         return new Yuyat_ParallelHttp_FixedQueue($size, $data);

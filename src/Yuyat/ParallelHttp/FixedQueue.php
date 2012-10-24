@@ -55,4 +55,11 @@ class Yuyat_ParallelHttp_FixedQueue extends Yuyat_ParallelHttp_Queue
 
         return parent::dequeue();
     }
+
+    public function isFilled()
+    {
+        $count = $this->count();
+
+        return $count >= $this->maxSize;
+    }
 }
