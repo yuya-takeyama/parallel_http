@@ -1,0 +1,21 @@
+{
+    "name": "yuyat/parallel_http",
+    "description": "Node.js like parallel HTTP client for PHP < 5.3",
+    "keywords": ["http", "event-driven", "parallel"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuya Takeyama",
+            "email": "sign.of.the.wolf.pentagram@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "edps/edps": ">=0.0.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "Yuyat": "src"
+        }
+    }
+}
