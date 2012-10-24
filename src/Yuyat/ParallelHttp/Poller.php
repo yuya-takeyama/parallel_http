@@ -22,13 +22,19 @@ class Yuyat_ParallelHttp_Poller
      */
     private $curlMulti;
 
+    /**
+     * @var int
+     */
+    private $parallels;
+
     private $timeout;
 
-    public function __construct($timeout = 1)
+    public function __construct($timeout = 1, $parallels = 10)
     {
         $this->timeout = $timeout;
+        $this->parallels = $parallels;
         $this->curlMulti = curl_multi_init();
-        $this->requestQueue = new Yuyat_ParallelHttp_RequestQueue;
+        $this->requestQueue = new Yuyat_ParallelHttp_Queue(10);
     }
 
     public function addRequest($request)
