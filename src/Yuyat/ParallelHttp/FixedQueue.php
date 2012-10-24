@@ -36,7 +36,7 @@ class Yuyat_ParallelHttp_FixedQueue extends Yuyat_ParallelHttp_Queue
     {
         $count = $this->count();
 
-        if ($count >= $this->maxSize) {
+        if ($this->isFilled()) {
             throw new RuntimeException(sprintf('FixedQueue is filled with %d elements', $count));
         }
 
