@@ -20,7 +20,7 @@ $loop   = new Yuyat_ParallelHttp_EventLoop;
 $client = new Yuyat_ParallelHttp_Client($loop);
 
 foreach ($urls as $url) {
-    $request = $client->request($url, function ($response) {
+    $request = $client->get($url, function ($response) {
         echo "Status Code: ";
         var_dump($response->getStatusCode());
         echo "Headers:", PHP_EOL;

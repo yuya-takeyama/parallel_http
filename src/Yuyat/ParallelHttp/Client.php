@@ -25,14 +25,36 @@ class Yuyat_ParallelHttp_Client
         $this->loop = $loop;
     }
 
-    public function request($url, $callback)
+    public function request(array $options, $callback)
     {
-        $request = new Yuyat_ParallelHttp_Request($url);
+        $request = new Yuyat_ParallelHttp_Request($options);
 
         $request->on('response', $callback);
 
         $this->loop->addRequest($request);
 
         return $request;
+    }
+
+    public function get($url, $callback)
+    {
+        $parsedUrl = parse_url($url);
+
+        $path = $parsedUrl['path'];
+
+        if (isset($parsedUrl['query']) && $parsedUrl['query'] !== '') {
+            $path .= "?{$parsedUrl['query']}";
+        }
+
+        $options = array(
+            'host' => $parsedUrl['host'],
+            'path' => $parsedUrl['path'],
+        );
+
+        if (isset($parsedUrl['port'])) {
+            $options['port'] = $parsedUrl['port'];
+        }
+
+        return $this->request($options, $callback);
     }
 }
