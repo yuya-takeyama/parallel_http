@@ -35,15 +35,21 @@ class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
 
         $this->host = $options['host'];
 
-        $this->method = isset($options['method']) ? strtoupper($options['method']) : 'GET';
-        $this->port   = isset($options['port']) ? (int)$options['port'] : 80;
-        $this->path   = isset($options['path']) ? (string)$options['path'] : '/';
-        $this->auth   = isset($options['auth']) ? (string)$options['auth'] : null;
+        $this->method  = isset($options['method']) ? strtoupper($options['method']) : 'GET';
+        $this->headers = isset($options['headers']) ? $options['headers'] : array();
+        $this->port    = isset($options['port']) ? (int)$options['port'] : 80;
+        $this->path    = isset($options['path']) ? (string)$options['path'] : '/';
+        $this->auth    = isset($options['auth']) ? (string)$options['auth'] : null;
     }
 
     public function getMethod()
     {
         return $this->method;
+    }
+
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     public function getUrl()

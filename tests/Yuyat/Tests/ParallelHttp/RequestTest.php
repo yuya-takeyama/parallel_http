@@ -59,6 +59,39 @@ class Yuyat_Tests_ParallelHttp_RequestTest extends PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function getHeaders_should_be_empty_array_by_default()
+    {
+        $request = $this->createRequest(array(
+            'host' => 'example.net',
+            'path' => '/path/to/document',
+        ));
+
+        $this->assertEquals(array(), $request->getHeaders());
+    }
+
+    /**
+     * @test
+     */
+    public function getHeaders_should_be_array_specified_as_headers()
+    {
+        $headers = array(
+            'Host'  => 'example.net',
+            'X-Foo' => 'Bar',
+        );
+
+        $request = $this->createRequest(array(
+            'host'    => 'example.net',
+            'path'    => '/path/to/document',
+            'headers' => $headers,
+        ));
+
+        $this->assertEquals($headers, $request->getHeaders());
+
+    }
+
+    /**
+     * @test
+     */
     public function getMethod_should_be_GET_by_deafult()
     {
         $request = $this->createRequest(array(
