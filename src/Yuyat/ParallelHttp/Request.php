@@ -27,6 +27,8 @@ class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
 
     private $auth;
 
+    private $curl;
+
     public function __construct(array $options)
     {
         if (! array_key_exists('host', $options)) {
@@ -69,5 +71,25 @@ class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
         $url .= $this->path;
 
         return $url;
+    }
+
+    public function getCurlResource()
+    {
+        if (is_null($this->curl)) {
+            $this->curl = curl_init();
+
+            curl_setopt_array($this->curl, array(
+                CURLOPT_URL            => $this->getUrl(),
+                CURLOPT_CUSTOMREQUEST  => $this->getMethod(),
+                CURLOPT_HTTPHEADER     => $this->getHeaders(),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_HEADER         => true,
+                CURLINFO_HEADER_OUT    => true,
+                CURLOPT_TIMEOUT        => 10,
+                CURLOPT_CONNECTTIMEOUT => 10,
+            ));
+        }
+
+        return $this->curl;
     }
 }

@@ -56,17 +56,7 @@ class Yuyat_ParallelHttp_EventLoop
     {
         while ($this->currentSize < $this->parallels && count($this->requestQueue) > 0) {
             $request = $this->requestQueue->dequeue();
-
-            $ch = curl_init();
-
-            curl_setopt_array($ch, array(
-                CURLOPT_URL            => $request->getUrl(),
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HEADER         => true,
-                CURLINFO_HEADER_OUT    => true,
-                CURLOPT_TIMEOUT        => 10,
-                CURLOPT_CONNECTTIMEOUT => 10,
-            ));
+            $ch      = $request->getCurlResource();
 
             curl_multi_add_handle($this->curlMulti, $ch);
 
