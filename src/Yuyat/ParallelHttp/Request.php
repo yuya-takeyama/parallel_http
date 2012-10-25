@@ -15,13 +15,53 @@
  */
 class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
 {
-    public function __construct($url)
+    private $host;
+
+    private $port;
+
+    private $path;
+
+    private $method;
+
+    private $headers;
+
+    private $auth;
+
+    public function __construct(array $options)
     {
-        $this->url = $url;
+        if (! array_key_exists('host', $options)) {
+            throw new InvalidArgumentException('"host" is required');
+        }
+
+        $this->host = $options['host'];
+
+        $this->method = isset($options['method']) ? strtoupper($options['method']) : 'GET';
+        $this->port   = isset($options['port']) ? (int)$options['port'] : 80;
+        $this->path   = isset($options['path']) ? (string)$options['path'] : '/';
+        $this->auth   = isset($options['auth']) ? (string)$options['auth'] : null;
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
     }
 
     public function getUrl()
     {
-        return $this->url;
+        $url = 'http://';
+
+        if (isset($this->auth)) {
+            $url .= "{$this->auth}@";
+        }
+
+        $url .= $this->host;
+
+        if ($this->port !== 80) {
+            $url .= ":{$this->port}";
+        }
+
+        $url .= $this->path;
+
+        return $url;
     }
 }
