@@ -24,18 +24,41 @@ class Yuyat_ParallelHttp_EventLoop
 
     private $parallels;
 
+    /**
+     * Interval time (in micro seconds)
+     *
+     * @var int
+     */
+    private $interval;
+
+    /**
+     * @var Yuyat_ParallelHttp_Queue
+     */
     private $requestQueue;
 
+    /**
+     * @var int
+     */
     private $currentSize = 0;
 
+    /**
+     * @var int
+     */
     private $running;
 
+    /**
+     * Map of curl resource ID and its parent request
+     *
+     * @var array
+     */
     private $requests = array();
 
-    public function __construct($timeout = 0.1, $parallels = 10)
+    public function __construct(array $options = array())
     {
-        $this->timeout = $timeout;
-        $this->parallels = $parallels;
+        $this->timeout   = isset($options['timeout']) ? (float)$options['timeout'] : 0.1;
+        $this->parallels = isset($options['parallels']) ? $options['parallels'] : 10;
+        $this->interval  = isset($options['interval']) ? $options['interval'] * 1000000 : null;
+
         $this->curlMulti = curl_multi_init();
         $this->requestQueue = new Yuyat_ParallelHttp_Queue;
     }
@@ -69,7 +92,13 @@ class Yuyat_ParallelHttp_EventLoop
             curl_multi_exec($this->curlMulti, $this->running);
         }
 
-        $result = curl_multi_select($this->curlMulti, $this->timeout);
+        if (isset($this->interval)) {
+            $result = 1;
+
+            usleep($this->interval);
+        } else {
+            $result = curl_multi_select($this->curlMulti, $this->timeout);
+        }
 
         switch ($result) {
         case -1:

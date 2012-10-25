@@ -15,18 +15,39 @@
  */
 class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
 {
+    /**
+     * @var string
+     */
     private $host;
 
+    /**
+     * @var int
+     */
     private $port;
 
+    /**
+     * @var string
+     */
     private $path;
 
+    /**
+     * @var string
+     */
     private $method;
 
+    /**
+     * @var array
+     */
     private $headers;
 
+    /**
+     * @var string
+     */
     private $auth;
 
+    /**
+     * @var resource (curl)
+     */
     private $curl;
 
     public function __construct(array $options)
