@@ -102,7 +102,7 @@ class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
             curl_setopt_array($this->curl, array(
                 CURLOPT_URL            => $this->getUrl(),
                 CURLOPT_CUSTOMREQUEST  => $this->getMethod(),
-                CURLOPT_HTTPHEADER     => $this->getHeaders(),
+                CURLOPT_HTTPHEADER     => $this->convertHeaders($this->getHeaders()),
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HEADER         => true,
                 CURLINFO_HEADER_OUT    => true,
@@ -112,5 +112,16 @@ class Yuyat_ParallelHttp_Request extends Edps_EventEmitter
         }
 
         return $this->curl;
+    }
+
+    private function convertHeaders(array $headers)
+    {
+        $result = array();
+
+        foreach ($headers as $key => $value) {
+            $result[] = "{$key}: {$value}";
+        }
+
+        return $result;
     }
 }
